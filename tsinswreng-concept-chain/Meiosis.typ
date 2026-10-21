@@ -3,16 +3,27 @@
 // set heading(numbering:) 只爲讓 @ 的默認引用渲染有東西可取
 // （無編號標題的引用會報 cannot reference heading without numbering），
 // 源碼直讀場景下編號樣式無意義。
+// show ref 覆蓋：載體標籤挂在文字上，
+// 默認 @ 渲染會報 cannot reference text，蓋成純文字即可編譯。
+// 渲染不是本場景的事，這兩行到渲染場景會被真正實現替換。
 #set heading(numbering: "1.")
+#show ref: it => str(it.target)
 
+// 紅線：標籤的源碼位置必須留在調用處（F12 直達）。
+// 做法：連字號載體（帶着調用處寫的標籤）**裸直入**標題序列，
+// 再用作用域內 set 規則縮成零號字（純樣式上下文、不建包裹元素）。
+// 三種已證死的錯誤寫法，勿再犯：
+// + 把標籤值取出來插值附着（#Lbl 獨立一行）——所有 F12 統統跳到這行；
+// + 用 text(size: 0pt) 包載體——樣式函數同樣讓定義位落到函數體內；
+// + 用 box(height: 0pt, clip: true) 包載體——跳到標題序列行（實測）。
+// 總之載體只要被包進任何元素體，標籤定義位就被偷走。
 #let MkTerm(display, descr) = {
 	let Lbl = display.fields().at("label", default: none)
 	if Lbl == none {
 		panic("T 的第一個參數要寫成 [-<概念名>]：連字號後跟標籤")
 	}
 	[
-		#heading(level: 2)[#str(Lbl)]
-		#Lbl
+		#heading(level: 2)[#str(Lbl) #set text(size: 0pt); #display]
 		#descr
 	]
 }

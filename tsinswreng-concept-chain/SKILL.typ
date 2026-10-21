@@ -4,7 +4,7 @@
 
 name: tsinswreng-concept-chain
 
-description: 概念登記區體系規範。採用「頂部概念登記 + 正文提及處引用」；概念應先聲明後使用, 登記順序即閱讀順序。當用戶要求你使用概念鏈講清某件事時 使用此skill。
+description: 當用戶要求你使用概念鏈講清某件事時 使用此skill。
 
 \-\-\-
 

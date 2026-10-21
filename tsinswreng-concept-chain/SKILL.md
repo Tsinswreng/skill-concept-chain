@@ -13,19 +13,15 @@ description: 當用戶要求你使用概念鏈講清某件事時 使用此skill�
 ```typst
 ///<概念鏈基礎設施>
 //以項目實際情況爲準 
-// set heading(numbering:) 只爲讓 @ 的默認引用渲染有東西可取
-// （無編號標題的引用會報 cannot reference heading without numbering），
-// 源碼直讀場景下編號樣式無意義。
 #set heading(numbering: "1.")
-
+#show ref: it => str(it.target)
 #let MkTerm(display, descr) = {
 	let Lbl = display.fields().at("label", default: none)
 	if Lbl == none {
 		panic("T 的第一個參數要寫成 [-<概念名>]：連字號後跟標籤")
 	}
 	[
-		#heading(level: 2)[#str(Lbl)]
-		#Lbl
+		#heading(level: 2)[#str(Lbl) #set text(size: 0pt); #display]
 		#descr
 	]
 }
